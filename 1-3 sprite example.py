@@ -5,7 +5,7 @@ import os
 
 WIDTH = 800
 HEIGHT = 600
-FPS = 30
+FPS = 60
 
 # define colors
 WHITE = (255, 255, 255)
@@ -28,15 +28,16 @@ class Player(pygame.sprite.Sprite):
         self.image.set_colorkey(BLACK)
         self.rect = self.image.get_rect()
         self.rect.center = (WIDTH / 2, HEIGHT / 2)
-        self.y_speed = 5
+        self.y_speed = 1
+        self.x_speed = 1
 
     def update(self):
-        self.rect.x += 5
+        self.rect.x += self.x_speed
         self.rect.y += self.y_speed
         if self.rect.bottom > HEIGHT - 200:
-            self.y_speed = -5
+            self.y_speed = -self.y_speed
         if self.rect.top < 200:
-            self.y_speed = 5
+            self.y_speed = -self.y_speed
         if self.rect.left > WIDTH:
             self.rect.right = 0
 
@@ -60,7 +61,14 @@ while running:
         # check for closing window
         if event.type == pygame.QUIT:
             running = False
-
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_1:
+                player.x_speed = player.x_speed + 1                
+            if event.key == pygame.K_2:
+                player.x_speed = player.x_speed - 1
+                if player.x_speed < 0:
+                    player.x_speed = 0
+            
     # Update
     all_sprites.update()
 
